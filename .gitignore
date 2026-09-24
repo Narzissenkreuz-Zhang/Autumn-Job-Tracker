@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+exports/*
+!exports/.gitkeep
+data/*.db-*
+data/*.sqlite*
+*.xlsx
+*.xls
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
