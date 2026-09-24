@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>秋招投递管理</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>秋招投递管理</h1>
+      <p>公司级流程统一记录，岗位差异展开查看</p>
+    </div>
+    <div class="top-actions">
+      <a class="button ghost" href="/api/export.xlsx">导出 Excel</a>
+      <button class="button primary" id="add-company">新增单位</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="toolbar" aria-label="筛选工具">
+      <label class="search-box">
+        <span>搜索</span>
+        <input id="search" type="search" placeholder="公司、Base 或岗位">
+      </label>
+      <div class="filters" id="filters">
+        <button class="filter active" data-filter="全部">全部</button>
+        <button class="filter" data-filter="未投递">未投递</button>
+        <button class="filter" data-filter="机筛">机筛</button>
+        <button class="filter" data-filter="笔试">笔试</button>
+        <button class="filter" data-filter="面试">面试</button>
+        <button class="filter" data-filter="Offer">Offer</button>
+        <button class="filter" data-filter="已结束">已结束</button>
+      </div>
+      <div class="summary" id="summary"></div>
+    </section>
+
+    <section class="company-list" id="company-list" aria-live="polite"></section>
+    <section class="empty hidden" id="empty-state">
+      <h2>没有匹配的单位</h2>
+      <p>可以调整搜索条件，或直接新增一个单位。</p>
+    </section>
+  </main>
+
+  <dialog id="company-dialog" class="modal">
+    <form id="company-form">
+      <div class="modal-header">
+        <div><h2 id="company-dialog-title">新增单位</h2><p>统一流程和时间填写在这里</p></div>
+        <button type="button" class="icon-button close-dialog" aria-label="关闭">×</button>
+      </div>
+      <div class="form-grid">
+        <label class="span-2">公司名称<input name="name" required autocomplete="off"></label>
+        <label>公司性质<select name="nature"></select></label>
+        <label>投递状态<select name="submitted"></select></label>
+        <label>当前阶段<select name="stage"></select></label>
+        <label>投递截止<input name="deadline" placeholder="如 9.30 或 9月下旬"></label>
+        <label>笔试时间<input name="exam_time" placeholder="如 9.20 19:00"></label>
+        <label>统一面试时间<input name="interview_time" placeholder="如 待通知"></label>
+        <label class="span-2">官网或投递入口<input name="website" type="url" placeholder="https://"></label>
+        <label class="span-2">备注<textarea name="notes" rows="3"></textarea></label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="button danger hidden" id="delete-company">删除单位</button>
+        <span class="spacer"></span>
+        <button type="button" class="button ghost close-dialog">取消</button>
+        <button type="submit" class="button primary">保存</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="position-dialog" class="modal">
+    <form id="position-form">
+      <div class="modal-header">
+        <div><h2 id="position-dialog-title">添加岗位</h2><p id="position-company-name"></p></div>
+        <button type="button" class="icon-button close-dialog" aria-label="关闭">×</button>
+      </div>
+      <input type="hidden" name="company_id">
+      <div class="form-grid">
+        <label>Base（城市）<input name="base" placeholder="如 深圳"></label>
+        <label>部门 / 机构<input name="department" placeholder="如 深圳总行"></label>
+        <label>岗位名称<input name="title" placeholder="如 AI 应用研发工程师"></label>
+        <label>岗位状态（可选）<select name="status_override"></select></label>
+        <label>笔试时间（可选）<input name="exam_override" placeholder="留空则跟随公司"></label>
+        <label>面试时间（可选）<input name="interview_override" placeholder="留空则跟随公司"></label>
+        <label class="span-2">岗位链接<input name="link" type="url" placeholder="https://"></label>
+        <label class="span-2">备注<textarea name="notes" rows="3"></textarea></label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="button danger hidden" id="delete-position">删除岗位</button>
+        <span class="spacer"></span>
+        <button type="button" class="button ghost close-dialog">取消</button>
+        <button type="submit" class="button primary">保存</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
